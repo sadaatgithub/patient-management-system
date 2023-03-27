@@ -94,6 +94,8 @@ class PatientVisitSerializers(serializers.ModelSerializer):
 
 class AppointmentSerializers(serializers.ModelSerializer):
     id_number = serializers.CharField(read_only=True)
+    cancelled = serializers.BooleanField(read_only=True)
+    completed = serializers.BooleanField(read_only=True)
 
 
     class Meta:
@@ -115,20 +117,10 @@ class EachPatientVisitSerializer(serializers.ModelSerializer):
         model = PatientVisit
         fields = '__all__'
 
-# class InitialDataSerializer(serializers.Serializer):
-#     patient = PatientSerializers()
-#     visits = PatientVisitSerializers()
-
-#     def to_representation(self,instance):
-#         patient_data = Patient.objects.all()
-#         visit_data = PatientVisit.objects.all()
-
-#         serialized_data={
-#             'patient_data':PatientSerializers(patient_data,many=True).data,
-#             'visit_data':PatientVisitSerializers(visit_data,many=True).data,
-
-#         }
-#         return serialized_data
+class UpdateAppointmentStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Appointment
+        fields = ['id','cancelled','completed']
 
 
   

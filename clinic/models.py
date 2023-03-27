@@ -67,8 +67,11 @@ class AddressWithBase(BaseInfo):
     city = models.CharField(max_length=100)
     country = models.CharField(max_length=200)
 
-    def __str__(self):
-        return self.line_one
+    class Meta:
+        abstract = True
+
+    # def __str__(self):
+    #     return self.line_one
 
 class Patient(AddressWithBase):
     date_recorded = models.DateTimeField(default=timezone.now)
@@ -76,13 +79,13 @@ class Patient(AddressWithBase):
     pt_weight = models.CharField(max_length=50,default="")
 
     def __str__(self):
-        return self.first_name
+        return self.first_name + " " + self.last_name
     
 class Doctor(BaseInfo):
     position = models.CharField(max_length=100, default="Doctor")
 
     def __str__(self):
-        return self.first_name + self.last_name
+        return self.first_name + " " + self.last_name
     
 class Prescription(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
@@ -104,10 +107,11 @@ class Appointment(models.Model):
     description = models.TextField(null=True)
     date_requested = models.DateTimeField(default=timezone.now)
     approved = models.BooleanField(default=False)
+    cancelled = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.first_name
+        return self.first_name + " " + self.last_name
 
 class PatientVisit(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE,related_name="visits")
@@ -138,4 +142,4 @@ class MedicalHistory(models.Model):
     family_history = models.CharField(max_length=100,null=True,default="NA")
 
     def __str__(self):
-        return self.patient.first_name
+        return self.patient.first_name + " " + self.patient.last_name 

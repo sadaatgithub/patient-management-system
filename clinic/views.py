@@ -2,7 +2,7 @@ from django.shortcuts import render
 from . models import Patient,PatientVisit,Appointment,Prescription
 # Create your views here.
 from .serializers import PatientSerializers,PatientVisitSerializers,\
-    AppointmentSerializers,PrescriptionSerializers,EachPatientVisitSerializer
+    AppointmentSerializers,PrescriptionSerializers,EachPatientVisitSerializer ,UpdateAppointmentStatusSerializer
 
 from rest_framework.viewsets import ModelViewSet,GenericViewSet,ReadOnlyModelViewSet
 from rest_framework.mixins import RetrieveModelMixin,UpdateModelMixin,CreateModelMixin
@@ -25,11 +25,15 @@ class PatientVisitView(ModelViewSet):
         return PatientVisit.objects.all()
 
 class AppointmentViewSet(ModelViewSet):
-
-    serializer_class = AppointmentSerializers
+    # http_methods = ['get','post','patch']
 
     def get_queryset(self):
         return Appointment.objects.all()
+    
+    def get_serializer_class(self):
+        if self.request.method == 'PATCH':
+            return UpdateAppointmentStatusSerializer
+        return AppointmentSerializers
 
 
 class PrescriptionViewSet(ModelViewSet):
