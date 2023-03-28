@@ -105,7 +105,7 @@ class Appointment(models.Model):
     phone = models.CharField(max_length=200)
     email = models.EmailField(max_length=200)
     description = models.TextField(null=True)
-    date_requested = models.DateTimeField(default=timezone.now)
+    date_requested = models.DateField(default="")
     approved = models.BooleanField(default=False)
     cancelled = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)

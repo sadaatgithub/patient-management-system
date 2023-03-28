@@ -1,8 +1,11 @@
 from django.shortcuts import render
-from . models import Patient,PatientVisit,Appointment,Prescription
+from . models import Patient,PatientVisit,Appointment,Prescription,Doctor
+from datetime import datetime
+
 # Create your views here.
 from .serializers import PatientSerializers,PatientVisitSerializers,\
-    AppointmentSerializers,PrescriptionSerializers,EachPatientVisitSerializer ,UpdateAppointmentStatusSerializer
+    AppointmentSerializers,PrescriptionSerializers,EachPatientVisitSerializer \
+        ,UpdateAppointmentStatusSerializer,PrescriptionDetailSerializers, DoctorSerializer
 
 from rest_framework.viewsets import ModelViewSet,GenericViewSet,ReadOnlyModelViewSet
 from rest_framework.mixins import RetrieveModelMixin,UpdateModelMixin,CreateModelMixin
@@ -28,7 +31,8 @@ class AppointmentViewSet(ModelViewSet):
     # http_methods = ['get','post','patch']
 
     def get_queryset(self):
-        return Appointment.objects.all()
+        now = datetime.now()
+        return Appointment.objects.filter(date_requested=now).all()
     
     def get_serializer_class(self):
         if self.request.method == 'PATCH':
@@ -37,8 +41,13 @@ class AppointmentViewSet(ModelViewSet):
 
 
 class PrescriptionViewSet(ModelViewSet):
-    serializer_class = PrescriptionSerializers
-    queryset = Prescription.objects.select_related('patient').all()
+    # serializer_class = PrescriptionSerializers
+    queryset = Prescription.objects.all()
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return PrescriptionDetailSerializers
+        return PrescriptionSerializers
 
 
 class EachPatientVisitViewSet(ModelViewSet):
@@ -49,7 +58,12 @@ class EachPatientVisitViewSet(ModelViewSet):
         print(self.kwargs)
         return PatientVisit.objects.filter(patient=self.kwargs['patient_id_pk'])
     
+class DoctorViewSet(ModelViewSet):
+    serializer_class = DoctorSerializer
+    queryset = Doctor.objects.all()
 
+
+    
 # class SingleApiView(ReadOnlyModelViewSet):
 #     serializer_class = InitialDataSerializer
 #     queryset = []

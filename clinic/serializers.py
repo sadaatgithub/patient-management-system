@@ -16,7 +16,7 @@ class SimplePatientSerializers(serializers.ModelSerializer):
 class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Doctor
-        fields = ['id_number','phone']
+        fields = ['id_number','first_name','last_name']
 
 class MedicalHistorySerializers(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
@@ -104,9 +104,16 @@ class AppointmentSerializers(serializers.ModelSerializer):
 
 
 class PrescriptionSerializers(serializers.ModelSerializer):
-    # patient = SimplePatientSerializers(read_only=True)
-    # prescribed_by = DoctorSerializer(read_only=True)
+    # patient = SimplePatientSerializers()
+    # prescribed_by = DoctorSerializer()
 
+    class Meta:
+        model = Prescription
+        fields = ['patient','prescribed_by','prescribed_drug','prescribed_on','prescription_notes']
+
+class PrescriptionDetailSerializers(serializers.ModelSerializer):
+    patient = SimplePatientSerializers()
+    prescribed_by = DoctorSerializer()
     class Meta:
         model = Prescription
         fields = ['patient','prescribed_by','prescribed_drug','prescribed_on','prescription_notes']
@@ -120,7 +127,7 @@ class EachPatientVisitSerializer(serializers.ModelSerializer):
 class UpdateAppointmentStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointment
-        fields = ['id','cancelled','completed']
+        fields = ['id','cancelled','completed','approved']
 
 
   

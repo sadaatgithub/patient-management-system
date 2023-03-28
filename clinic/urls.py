@@ -12,6 +12,7 @@ router.register('api/home', views.HomeViewSet, basename="home")
 router.register('api/visits', views.PatientVisitView, basename="visits")
 router.register('api/appointments', views.AppointmentViewSet, basename="appointment")
 router.register('api/prescription', views.PrescriptionViewSet, basename="prescription")
+router.register('api/doctor', views.DoctorViewSet, basename="doctor")
 # router.register('api/all', views.SingleApiView, basename="all")
 
 
