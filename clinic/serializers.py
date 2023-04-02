@@ -10,13 +10,14 @@ class SimplePatientSerializers(serializers.ModelSerializer):
     # last_name = serializers.CharField(read_only=True)
     class Meta:
         model = Patient
-        fields = ['id','phone','last_name','id_number']
+        fields = ['id','id_number','first_name','last_name','phone',]
     
 
 class DoctorSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
     class Meta:
         model = Doctor
-        fields = ['id_number','first_name','last_name']
+        fields = ['id','first_name','last_name']
 
 class MedicalHistorySerializers(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
