@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from datetime import datetime
-
+from django.contrib.auth.models import AbstractUser
 
 GENDER_CHOICES = (
     ("Male", "Male"),
@@ -46,6 +46,11 @@ def generate_unique_id():
     timestamp = now.strftime("%Y%m%d%H%M%S")
     return timestamp
 
+class User(AbstractUser):
+    email = models.EmailField(unique=True)
+
+    class Meta:
+        verbose_name = "User"
 
 class BaseInfo(models.Model):
     id_number = models.CharField(max_length=200,default=generate_unique_id, unique=True)

@@ -10,11 +10,12 @@ from .serializers import PatientSerializers,PatientVisitSerializers,\
 from rest_framework.viewsets import ModelViewSet,GenericViewSet,ReadOnlyModelViewSet
 from rest_framework.mixins import RetrieveModelMixin,UpdateModelMixin,CreateModelMixin
 from rest_framework.response import Response
-
+from rest_framework.permissions import IsAuthenticated
 
 
 class HomeViewSet(ModelViewSet):
     serializer_class = PatientSerializers
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Patient.objects.all()
@@ -22,6 +23,8 @@ class HomeViewSet(ModelViewSet):
 class PatientVisitView(ModelViewSet):
     
     serializer_class = PatientVisitSerializers
+    permission_classes = [IsAuthenticated]
+
     # queryset = PatientVisit.objects.select_related('patient_visit').all()
 
     def get_queryset(self):
@@ -29,6 +32,8 @@ class PatientVisitView(ModelViewSet):
 
 class AppointmentViewSet(ModelViewSet):
     # http_methods = ['get','post','patch']
+    permission_classes = [IsAuthenticated]
+
 
     def get_queryset(self):
         now = datetime.now()
@@ -41,6 +46,8 @@ class AppointmentViewSet(ModelViewSet):
 
 
 class PrescriptionViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated]
+
     # serializer_class = PrescriptionSerializers
     queryset = Prescription.objects.all()
 
@@ -52,6 +59,8 @@ class PrescriptionViewSet(ModelViewSet):
 
 class EachPatientVisitViewSet(ModelViewSet):
     serializer_class = EachPatientVisitSerializer
+    permission_classes = [IsAuthenticated]
+
 
    
     def get_queryset(self):
@@ -61,6 +70,8 @@ class EachPatientVisitViewSet(ModelViewSet):
 class DoctorViewSet(ModelViewSet):
     serializer_class = DoctorSerializer
     queryset = Doctor.objects.all()
+    permission_classes = [IsAuthenticated]
+
 
 
     
