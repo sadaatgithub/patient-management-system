@@ -1,5 +1,6 @@
 from rest_framework_nested import routers
 from . import views
+from django.urls import path
 from pprint import pprint
 
 
@@ -17,4 +18,10 @@ router.register('api/doctor', views.DoctorViewSet, basename="doctor")
 
 
 # pprint(router.urls)
-urlpatterns = router.urls 
+# urlpatterns = router.urls 
+urlpatterns = [
+    path('auth/jwt/create/', views.CustomTokenObtainPairView.as_view()),
+    path('auth/jwt/refresh/', views.CustomTokenRefreshView.as_view()),
+    path('auth/jwt/verify/', views.CustomTokenVerifyView.as_view()),
+
+] + router.urls 

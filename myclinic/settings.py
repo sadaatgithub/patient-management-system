@@ -136,8 +136,11 @@ AUTH_USER_MODEL = "clinic.User"
 
 REST_FRAMEWORK ={
     'DEFAULT_AUTHENTICATION_CLASSES': (
-         'rest_framework_simplejwt.authentication.JWTAuthentication',
+         'clinic.authentication.CustomJWTAuthentication',
     ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
 }
 SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('JWT',),
@@ -149,7 +152,19 @@ DJOSER ={
         'current_user':'myapp.serializers.UserSerializer',
         }
 }
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
+AUTH_COOKIE = 'access'
+AUTH_COOKIE_MAX_AGE = 60 * 60 * 24
+AUTH_COOKIE_SECURE = True
+AUTH_COOKIE_HTTP_ONLY = True
+AUTH_COOKIE_PATH = '/'
+AUTH_COOKIE_SAMESITE = 'None'
+
+
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     # "http://127.0.0.1:8000",
     "http://127.0.0.1:3000",
